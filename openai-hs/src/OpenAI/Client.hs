@@ -113,6 +113,7 @@ module OpenAI.Client
 where
 
 import Control.Monad.IO.Class (MonadIO(..))
+import qualified Data.ByteString as BS
 import qualified Data.ByteString.Lazy as BSL
 import Data.Proxy
 import qualified Data.Text as T
@@ -127,7 +128,7 @@ import Servant.Client
 import qualified Servant.Multipart.Client as MP
 
 -- | Your OpenAI API key. Can be obtained from the OpenAI dashboard. Format: @sk-<redacted>@
-type ApiKey = T.Text
+type ApiKey = BS.ByteString
 
 -- | Holds a 'Manager' and your API key.
 data OpenAIClient = OpenAIClient
@@ -145,7 +146,7 @@ makeOpenAIClient' ::
   -- | Number of automatic retries the library should attempt.
   Int ->
   OpenAIClient
-makeOpenAIClient' u k = OpenAIClient u (Token (T.encodeUtf8 k))
+makeOpenAIClient' u k = OpenAIClient u (Token k)
 
 -- | method using default remote base url
 makeOpenAIClient ::
